@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Over</title>
+</head>
+<body style="text-align:center; margin-top:50px; font-family:sans-serif;">
+    <h1>{{ 'Congratulations! You guessed it!' if won else 'Game Over!' }}</h1>
+    <h2>The word was: {{ answer }}</h2>
+    <a href="{{ url_for('reset') }}">Play Again</a>
+</body>
+</html>
