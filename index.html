@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wordle</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #ffffff;
+      margin-top: 50px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 120px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+
+    .guess-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      justify-content: center;
+      width: 300px;
+    }
+
+    .tile, .correct, .present, .absent {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      text-transform: uppercase;
+      border: 2px solid #d3d6da;
+      box-sizing: border-box;
+    }
+
+    .correct {
+      background-color: #6aaa64;
+      color: white;
+      border-color: #6aaa64;
+    }
+
+    .present {
+      background-color: #c9b458;
+      color: white;
+      border-color: #c9b458;
+    }
+
+    .absent {
+      background-color: #787c7e;
+      color: white;
+      border-color: #787c7e;
+    }
+
+    .result-message {
+      font-size: 20px;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .play-again {
+      margin-top: 15px;
+      text-decoration: none;
+      background-color: #6aaa64;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .play-again:hover {
+      background-color: #5a9953;
+    }
+
+    .keyboard {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .key {
+      width: 43px;
+      height: 58px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      background-color: #d3d6da;
+      color: black;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+      text-transform: uppercase;
+    }
+
+    .key.wide {
+      width: 75px;
+    }
+
+    .key.correct {
+      background-color: #6aaa64;
+      color: white;
+    }
+
+    .key.present {
+      background-color: #c9b458;
+      color: white;
+    }
+
+    .key.absent {
+      background-color: #787c7e;
+      color: white;
+    }
+
+    #message-box {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+<h1 style="margin-bottom: 5px;">Wordle</h1>
+
+<p style="margin-top: 0; margin-bottom: 20px;">
+  <a href="{{ url_for('reset') }}" style="text-decoration: none; color: #6a5acd; font-size: 14px;">Reset</a>
+</p>
+
+
+  {% if message %}
+    <div id="message-box">{{ message }}</div>
+  {% endif %}
+
+  <form method="POST">
+    <input type="text" name="guess" maxlength="5" required autofocus />
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="grid">
+    {% for i in range(6) %}
+      <div class="guess-row">
+        {% if i < guesses|length %}
+          {{ guesses[i].word|safe }}
+        {% else %}
+          {% for _ in range(5) %}
+            <span class="tile"></span>
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+
+
+  {% if won is not none %}
+    <div class="result-message">
+      {% if won %}
+        🎉 Congratulations! You guessed the word!
+      {% else %}
+        ❌ Game Over! Better luck next time.
+      {% endif %}
+      <div>The correct word was: <strong>{{ answer }}</strong></div>
+    </div>
+    <a href="{{ url_for('reset') }}" class="play-again">Play Again</a>
+  {% endif %}
+
+  <div class="keyboard">
+    <div class="row">
+      {% for key in 'QWERTYUIOP' %}
+        <button class="key {{ keyboard.get(key, '') }}" onclick="addLetter('{{ key }}')">{{ key }}</button>
+      {% endfor %}
+    </div>
+    <div class="row">
+      {% for key in 'ASDFGHJKL' %}
+        <button class="key {{ keyboard.get(key, '') }}" onclick="addLetter('{{ key }}')">{{ key }}</button>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <button class="key wide" onclick="submitGuess()">ENTER</button>
+      {% for key in 'ZXCVBNM' %}
+        <button class="key {{ keyboard.get(key, '') }}" onclick="addLetter('{{ key }}')">{{ key }}</button>
+      {% endfor %}
+      <button class="key wide" onclick="removeLetter()">⌫</button>
+    </div>
+  </div>
+
+  <script>
+    function addLetter(letter) {
+      const input = document.querySelector('input[name=\"guess\"]');
+      if (input.value.length < 5) {
+        input.value += letter;
+      }
+    }
+
+    function removeLetter() {
+      const input = document.querySelector('input[name=\"guess\"]');
+      input.value = input.value.slice(0, -1);
+    }
+
+    function submitGuess() {
+      document.querySelector('form').submit();
+    }
+  </script>
+</body>
+</html>
