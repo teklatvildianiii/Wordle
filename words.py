@@ -37,8 +37,7 @@ word_list = ['ABOUT', 'ABOVE', 'ABUSE', 'ACTOR', 'ACUTE',
                                 'FULLY', 'FUNNY', 'GIANT', 'GIVEN', 'GLASS', 
                                 'GLOBE', 'GOING', 'GRACE', 'GRADE', 'GRAND', 
                                 'GRANT', 'GRASS', 'GREAT', 'GREEN', 'GROSS', 
-                                'GROUP', 'GROWN', 'GUARD', 'GUESS', 'GUEST',
-                                'GUIDE', 'HAPPY', 'HARRY', 'HEART', 'HEAVY', 
+                                'GROUP', 'GROWN', 'GUARD', 'GUESS', 'GUEST',                                 'GUIDE', 'HAPPY', 'HARRY', 'HEART', 'HEAVY', 
                                 'HENCE', 'HENRY', 'HORSE', 'HOTEL', 'HOUSE', 
                                 'HUMAN', 'IDEAL', 'IMAGE', 'INDEX', 'INNER', 
                                 'INPUT', 'ISSUE', 'JAPAN', 'JIMMY', 'JOINT', 
@@ -97,5 +96,6 @@ word_list = ['ABOUT', 'ABOVE', 'ABUSE', 'ACTOR', 'ACUTE',
                                 'WHICH', 'WHILE', 'WHITE', 'WHOLE', 'WHOSE', 
                                 'WOMAN', 'WOMEN', 'WORLD', 'WORRY', 'WORSE', 
                                 'WORST', 'WORTH', 'WOULD', 'WOUND', 'WRITE', 
-                                'WRONG', 'WROTE', 'YIELD', 'YOUNG', 'YOUTH']
+                                'WRONG', 'WROTE', 'YIELD', 'YOUNG', 'YOUTH',
+                                'MANGO', 'VIVID', 'JUICE', 'RESET']
 
