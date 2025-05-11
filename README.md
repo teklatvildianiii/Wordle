@@ -14,6 +14,6 @@ After each guess, the game provides feedback indicating which letters are correc
 
 ## Technologies Used
 
-- Python 3
+- Python 
 - Flask
-- HTML, CSS, JavaScript
+- HTML
