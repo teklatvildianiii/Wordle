@@ -3,11 +3,11 @@ from random import choice
 from words import word_list
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey' 
+app.secret_key = 'supersecretkey'  # Required for session handling
 
 SQUARES = {
-    'correct_place': '',
-    'correct_letter': '',
+    'correct_place': '🟩',
+    'correct_letter': '🟨',
     'incorrect_letter': '⬛'
 }
 
@@ -115,8 +115,19 @@ def index():
 
 @app.route('/reset')
 def reset():
-    session.clear()
+    player = session.get('player')
+    
+    session.pop('answer', None)
+    session.pop('guesses', None)
+    session.pop('patterns', None)
+    session.pop('keyboard', None)
+    session.pop('won', None)
+    session.pop('message', None)
+
+    session['player'] = player
+
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)
