@@ -16,4 +16,3 @@ After each guess, the game provides feedback indicating which letters are correc
 
 - Python 
 - Flask
-- HTML
