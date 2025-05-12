@@ -3,7 +3,7 @@ from random import choice
 from words import word_list
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # Required for session handling
+app.secret_key = 'djvcnsudhbviausbdvUIdsc'  
 
 SQUARES = {
     'correct_place': '🟩',
